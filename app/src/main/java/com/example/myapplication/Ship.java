@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.Log;
 
 public class Ship {
     protected float x; // координаты
@@ -15,32 +16,35 @@ public class Ship {
     protected Bitmap bitmap; // картинка
 
     public Ship(Context context) {
-        bitmapId = R.drawable.spr; // определяем начальные параметры
-        size = 5;
+        bitmapId = R.drawable.agdfon; // определяем начальные параметры
+        size = 540;
         x=7;
         y=AgdView.maxY - size - 1;
-        speed = (float) 0.2;
+        speed = (float) 3;
          // инициализируем корабль
         Bitmap cBitmap = BitmapFactory.decodeResource(context.getResources(), bitmapId);
         bitmap = Bitmap.createScaledBitmap(
-                cBitmap, (int)(size * AgdView.unitW), (int)(size * AgdView.unitH), false);
+                cBitmap, (int)(size * AgdView.unitW), (int)(2 * size * AgdView.unitH), false);
         cBitmap.recycle();
     }
 
 
     public void update() { // перемещаем корабль в зависимости от нажатой кнопки
-        if(MainActivity.isLeftPressed && y >= 0){
+        if(MainActivity.isLeftPressed ){
             y -= speed;
+
         }
        // if(MainActivity.isRightPressed && y <= AgdView.maxY - 5){
        //     y += speed;
       //  }
         if(MainActivity.isRightPressed && y <= 2000){
             y += speed;
+
         }
     }
 
     void drow(Paint paint, Canvas canvas){ // рисуем картинку
+        Log.d("kordy", String.valueOf(y*AgdView.unitH));
         canvas.drawBitmap(bitmap, x*AgdView.unitW, y*AgdView.unitH, paint);
     }
 }

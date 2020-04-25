@@ -10,8 +10,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class AgdView extends SurfaceView implements Runnable {
-    public static int maxX = 20; // размер по горизонтали
-    public static int maxY = 28; // размер по вертикали
+    public static int maxX = 540; // размер по горизонтали
+    public static int maxY = 540; // размер по вертикали
     public static float unitW = 0; // пикселей в юните по горизонтали
     public static float unitH = 0; // пикселей в юните по вертикали
     private boolean firstTime = true;
