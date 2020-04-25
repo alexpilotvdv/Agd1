@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("alp","oncreate");
         setContentView(R.layout.activity_main);
         AgdView agdView = new AgdView(this); //создаем экземпляр класса с главным процессом
         LinearLayout guiLayaut = (LinearLayout)findViewById(R.id.Llayaut);
@@ -25,6 +27,12 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         rightButton.setOnTouchListener(this);
 
 
+    }
+
+    protected void onDestroy(AgdView agdView ){
+        Log.d("alp","destroy");
+        agdView.stopthread();
+        super.onDestroy();
     }
     public boolean onTouch(View button, MotionEvent motion) {
         switch(button.getId()) { // определяем какая кнопка

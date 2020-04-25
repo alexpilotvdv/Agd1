@@ -6,8 +6,11 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import java.io.StringBufferInputStream;
 
 public class AgdView extends SurfaceView implements Runnable {
     public static int maxX = 540; // размер по горизонтали
@@ -39,6 +42,9 @@ public class AgdView extends SurfaceView implements Runnable {
             control();
         }
     }
+    public void stopthread(){
+        this.gameRunning=false;
+    }
     private void update() {
         if(!firstTime) {
             ship.update();
@@ -51,6 +57,8 @@ public class AgdView extends SurfaceView implements Runnable {
                 firstTime = false;
                 unitW = surfaceHolder.getSurfaceFrame().width()/maxX; // вычисляем число пикселей в юните
                 unitH = surfaceHolder.getSurfaceFrame().height()/maxY;
+                Log.d("alp", "w=" + String.valueOf(unitW));
+                Log.d("alp", "h=" + String.valueOf(unitH));
                 ship = new Ship(getContext()); // добавляем корабль
             }
 
