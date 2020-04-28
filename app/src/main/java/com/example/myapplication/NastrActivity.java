@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,10 +44,15 @@ public class NastrActivity extends AppCompatActivity {
     public String data;
     public String btx;//соберем х
     public String bty;//соберем у
+    public static float fbtx;
+    public static float fbty;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nastr);
+        AgdView agdView = new AgdView(this); //создаем экземпляр класса с главным процессом
+        LinearLayout guiLayaut = (LinearLayout)findViewById(R.id.nAgd);
+        guiLayaut.addView(agdView);
         textInfo = (TextView)findViewById(R.id.textInfo);
         textBt = (TextView)findViewById(R.id.textBt);
         textBt.setText("*********");
@@ -60,6 +66,9 @@ public class NastrActivity extends AppCompatActivity {
                 mHandler.obtainMessage();
                 data = msg.getData().getString("Key");
                 textBt.setText(data);
+                fbtx=Float.parseFloat(btx);
+                fbty=Float.parseFloat(bty);
+
             }
         };
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH)){
@@ -223,7 +232,7 @@ public class NastrActivity extends AppCompatActivity {
                     char bytes = (char) connectedInputStream.read(buffer);
                     String strIncom = new String(buffer, 0, bytes);
                     //sbc.append(strIncom);
-                    Log.d("xxx", strIncom + " " + strIncom.length() );
+                   // Log.d("xxx", strIncom + " " + strIncom.length() );
                     if(strIncom.equals("x")){
                         if(flag==0){
                             posx=sbc.length();
@@ -233,7 +242,7 @@ public class NastrActivity extends AppCompatActivity {
                             bty=sbc.substring(posy,sbc.length());
                             sbc.delete(0, sbc.length());
                             flag2=1;
-                            Log.d("xxx", btx );
+                      //      Log.d("xxx", btx );
                         }
 
                     }
@@ -250,7 +259,7 @@ public class NastrActivity extends AppCompatActivity {
                    // int endOfLineIndex = sb.indexOf("\r\n"); // определяем конец строки
                     //Log.d("xxx", sb.substring(0));
                     if (flag2==1){
-                        Log.d("xxx", "btx=" + btx );
+                      //  Log.d("xxx", "btx=" + btx );
                         //sbprint = sb.substring(0, sb.length());
                       //  sb.delete(0, sb.length());
                         sbprint="x=" + btx + " " + "y=" + bty;
@@ -280,6 +289,10 @@ public class NastrActivity extends AppCompatActivity {
 
     }
 
-
+    protected void onDestroy(AgdView agdView ){
+        Log.d("alp","destroy");
+        agdView.stopthread();
+        super.onDestroy();
+    }
 }
 

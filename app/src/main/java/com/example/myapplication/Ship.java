@@ -50,7 +50,9 @@ public class Ship {
 
         }
     }
-
+    void drowxy(Paint paint, Canvas canvas, float x, float y){ // рисуем картинку
+        canvas.drawBitmap(bitmap, x, y, paint);
+    }
     void drow(Paint paint, Canvas canvas){ // рисуем картинку
         Log.d("kordy", String.valueOf(y*AgdView.unitH));
         canvas.drawBitmap(bitmap, x*AgdView.unitW, y*AgdView.unitH, paint);

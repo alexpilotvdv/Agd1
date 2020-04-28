@@ -18,9 +18,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         super.onCreate(savedInstanceState);
         Log.d("alp","oncreate");
         setContentView(R.layout.activity_main);
-        AgdView agdView = new AgdView(this); //создаем экземпляр класса с главным процессом
-        LinearLayout guiLayaut = (LinearLayout)findViewById(R.id.Llayaut);
-        guiLayaut.addView(agdView);
         Button leftButton = (Button) findViewById(R.id.leftButton); // находим кнопки
         Button rightButton = (Button) findViewById(R.id.rightButton);
         Button setButton = (Button) findViewById(R.id.setButton);
@@ -30,11 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         setButton.setOnTouchListener(this);
     }
 
-    protected void onDestroy(AgdView agdView ){
-        Log.d("alp","destroy");
-        agdView.stopthread();
-        super.onDestroy();
-    }
+
     public boolean onTouch(View button, MotionEvent motion) {
         switch(button.getId()) { // определяем какая кнопка
 
