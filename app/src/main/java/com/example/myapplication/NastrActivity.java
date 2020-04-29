@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -50,6 +51,11 @@ public class NastrActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nastr);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LOW_PROFILE );
+
+
         AgdView agdView = new AgdView(this); //создаем экземпляр класса с главным процессом
         LinearLayout guiLayaut = (LinearLayout)findViewById(R.id.nAgd);
         guiLayaut.addView(agdView);
@@ -102,7 +108,7 @@ public class NastrActivity extends AppCompatActivity {
             for (BluetoothDevice device : pairedDevices) { // Добавляем сопряжённые устройства - Имя + MAC-адресс
                 pairedDeviceArrayList.add(device.getName() + "\n" + device.getAddress());
             }
-            pairedDeviceAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, pairedDeviceArrayList);
+            pairedDeviceAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, pairedDeviceArrayList);
             listViewPairedDevice.setAdapter(pairedDeviceAdapter);
             listViewPairedDevice.setOnItemClickListener(new AdapterView.OnItemClickListener() { // Клик по нужному устройству
                 @Override
@@ -179,7 +185,7 @@ public class NastrActivity extends AppCompatActivity {
                          // открываем панель с кнопками вызываем активность с ful меняем координаты
                     }
                 });
-                Log.d("xxx","111");
+
                 myThreadConnected = new ThreadConnected(bluetoothSocket);
                 myThreadConnected.start(); // запуск потока приёма и отправки данных
             }
@@ -268,7 +274,7 @@ public class NastrActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 //  передача полученных данных
-                              Log.d("xxx", sbprint );
+
                                 Message msg = Message.obtain();
                                 Bundle bundle = new Bundle();
                                 bundle.putString("Key", sbprint);
@@ -290,7 +296,7 @@ public class NastrActivity extends AppCompatActivity {
     }
 
     protected void onDestroy(AgdView agdView ){
-        Log.d("alp","destroy");
+
         agdView.stopthread();
         super.onDestroy();
     }
