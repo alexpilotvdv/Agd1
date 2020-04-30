@@ -12,10 +12,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 
-public class NastrActivity extends AppCompatActivity {
+public class NastrActivity extends AppCompatActivity  {
     private static final int REQUEST_ENABLE_BT = 1;
     BluetoothAdapter bluetoothAdapter;
     ArrayList<String> pairedDeviceArrayList;
@@ -47,6 +49,8 @@ public class NastrActivity extends AppCompatActivity {
     public String bty;//соберем у
     public static float fbtx;
     public static float fbty;
+    public static float corx=0;
+    public static float cory=0; //для коррекции показаний через кнопки
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,14 +58,16 @@ public class NastrActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LOW_PROFILE );
-
-
         AgdView agdView = new AgdView(this); //создаем экземпляр класса с главным процессом
         LinearLayout guiLayaut = (LinearLayout)findViewById(R.id.nAgd);
         guiLayaut.addView(agdView);
         textInfo = (TextView)findViewById(R.id.textInfo);
         textBt = (TextView)findViewById(R.id.textBt);
         textBt.setText("*********");
+        Button btLeft = (Button)findViewById(R.id.leftButton);
+        Button btRight = (Button)findViewById(R.id.rightButton);
+
+      //  btRight.setOnTouchListener(this);
         final String UUID_STRING_WELL_KNOWN_SPP = "00001101-0000-1000-8000-00805F9B34FB";
         listViewPairedDevice = (ListView)findViewById(R.id.pairedlist);
         ///для получения сообщений от потока блютус
@@ -143,6 +149,39 @@ public class NastrActivity extends AppCompatActivity {
         }
     }
 
+    public void ckRight(View view) {
+        corx = (float) (corx+0.1);
+    }
+
+    public void ckLeft(View view) {
+        corx = (float) (corx-0.1);
+    }
+
+
+    /*public boolean onTouch(View v, MotionEvent event) {
+        switch(v.getId()) { // определяем какая кнопка
+            case R.id.rightAng:
+                switch (event.getAction()) { // определяем нажата или отпущена
+                    case MotionEvent.ACTION_DOWN:
+                        corx = (float) (corx + 0.1);
+                        break;
+                    case MotionEvent.ACTION_UP:
+
+                        break;
+                }
+            case R.id.leftAng:
+                switch (event.getAction()) { // определяем нажата или отпущена
+                    case MotionEvent.ACTION_DOWN:
+                        corx = (float) (corx - 0.1);
+                        break;
+                    case MotionEvent.ACTION_UP:
+
+                        break;
+                }
+                break;
+        }
+        return true;
+    }*/
 
 
     private class ThreadConnectBTdevice extends Thread { // Поток для коннекта с Bluetooth

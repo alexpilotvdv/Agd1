@@ -18,7 +18,7 @@ public class Plane {
     protected Bitmap bitmap; // картинка
     public final Matrix transform = new Matrix();
     public Plane(Context context) {
-        bitmapId = R.drawable.planen; // определяем начальные параметры
+        bitmapId = R.drawable.planene; // определяем начальные параметры
         lenght=AgdView.horW - 10;
         weight=lenght/4;
         size = 540;

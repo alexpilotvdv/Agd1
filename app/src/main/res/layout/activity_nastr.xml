@@ -23,6 +23,18 @@
         android:id="@+id/textBt"
         android:layout_weight="10"
         android:visibility="visible" />
+    <Button
+        android:id="@+id/rightAng"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:text="Вправо" />
+    <Button
+        android:id="@+id/leftAng"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:text="Влево" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
@@ -31,5 +43,6 @@
         android:layout_weight="70"
         android:id="@+id/nAgd"
       />
+
 
 </LinearLayout>
