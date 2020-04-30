@@ -24,6 +24,7 @@ public class AgdView extends SurfaceView implements Runnable {
     private boolean firstTime = true;
     private boolean gameRunning = true;
     private float turnp;
+    private float kh=0;
     private Ship ship;
     private Plane plane;
     private Thread gameThread = null;
@@ -31,6 +32,8 @@ public class AgdView extends SurfaceView implements Runnable {
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
     private int currentTime = 0;
+    private float pixgradus=1;
+    private float ky=0;
     public AgdView(Context context) {
         super(context);
         //инициализируем обьекты для рисования
@@ -53,8 +56,8 @@ public class AgdView extends SurfaceView implements Runnable {
     }
     private void update() {
         if(!firstTime) {
-            ship.update();
-            plane.update();
+            //ship.update();
+           // plane.update();
         }
     }
     private void draw() {
@@ -66,16 +69,26 @@ public class AgdView extends SurfaceView implements Runnable {
                 unitH = surfaceHolder.getSurfaceFrame().height() / maxY;
                 ecrW = surfaceHolder.getSurfaceFrame().width();
                 ecrH = surfaceHolder.getSurfaceFrame().height();
+
                 if (ecrW > ecrH) {
-                    horW = ecrH + 170; //если ширина больше высоты, то ширина фона равна высоте
+                   /* horW = ecrH + 170; //если ширина больше высоты, то ширина фона равна высоте
                     horH = ecrH * 4;
+*/
+                   horW=ecrH+170;
+                   kh= (float) (2*horW*6/4);
+                   horH= (int) kh;
 
                 } else {
-                    horW = ecrW;
+                  /*  horW = ecrW;
                     horH = ecrW * 4;
+*/
+                  horW=ecrW;
+                  kh= (float) (2*horW*6/4);
+                  horH= (int) kh;
 
                 }
-
+                pixgradus= (float) (0.7*(6*(float)horW/4)/90);
+                ky=-30 -(horH-ecrH)/2;
                 ship = new Ship(getContext()); // добавляем объекты
                 plane=new Plane(getContext());
             }
@@ -91,7 +104,8 @@ public class AgdView extends SurfaceView implements Runnable {
             try {
                 canvas = surfaceHolder.lockCanvas(); // закрываем canvas
                 canvas.drawColor(Color.BLACK); // заполняем фон чёрным
-                ship.drowxy(paint, canvas, 0, -30 -(horH-ecrH)/2+NastrActivity.fbty * 7);
+                //ship.drowxy(paint, canvas, 0, -30 -(horH-ecrH)/2+NastrActivity.fbty * 7);
+                ship.drowxy(paint, canvas, 0, ky+NastrActivity.fbty * pixgradus);
                 plane.drowangel(paint,canvas,turnp);
                 // ship.drow(paint, canvas); // рисуем корабль
                 surfaceHolder.unlockCanvasAndPost(canvas); // открываем canvas
