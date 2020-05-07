@@ -52,6 +52,14 @@
             android:onClick="ckLeft"
             android:text="Влево" />
 
+        <Button
+            android:id="@+id/CalibBtn"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:onClick="ckCalib"
+            android:text="Калибровка" />
+
     </LinearLayout>
 
 

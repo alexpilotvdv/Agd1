@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -47,8 +48,10 @@ public class NastrActivity extends AppCompatActivity  {
     public String data;
     public String btx;//соберем х
     public String bty;//соберем у
+    public String btz;
     public static float fbtx;
     public static float fbty;
+    public static float fbtz;
     public static float corx=0;
     public static float cory=0; //для коррекции показаний через кнопки
     @Override
@@ -66,20 +69,29 @@ public class NastrActivity extends AppCompatActivity  {
         textBt.setText("*********");
         Button btLeft = (Button)findViewById(R.id.leftButton);
         Button btRight = (Button)findViewById(R.id.rightButton);
+        Button btCal=(Button)findViewById(R.id.CalibBtn);
 
       //  btRight.setOnTouchListener(this);
         final String UUID_STRING_WELL_KNOWN_SPP = "00001101-0000-1000-8000-00805F9B34FB";
         listViewPairedDevice = (ListView)findViewById(R.id.pairedlist);
         ///для получения сообщений от потока блютус
         mHandler = new Handler() {
+            @SuppressLint("HandlerLeak")
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 mHandler.obtainMessage();
                 data = msg.getData().getString("Key");
                 textBt.setText(data);
-                fbtx=Float.parseFloat(btx);
-                fbty=Float.parseFloat(bty);
+                Log.d("xxx",data);
+                try {
+                    fbtx=Float.parseFloat(btx);
+                    fbty=Float.parseFloat(bty);
+                    fbtz=Float.parseFloat(btz);
+                } catch (InternalError error){
+                    error.printStackTrace();
+                }
+
 
             }
         };
@@ -155,6 +167,16 @@ public class NastrActivity extends AppCompatActivity  {
 
     public void ckLeft(View view) {
         corx = (float) (corx-0.1);
+    }
+
+    public void ckCalib(View view) {
+        if(fbtx>0) {
+            corx = 180-fbtx;
+        }
+        if(fbtx<0){
+            corx=-(180+fbtx);
+        }
+
     }
 
 
@@ -248,10 +270,13 @@ public class NastrActivity extends AppCompatActivity  {
         private final InputStream connectedInputStream;
         private final OutputStream connectedOutputStream;
         private String sbprint;
-        int flag =0;
-        int flag2 =0;
+        int flag=0;
+        int flag2=0;
+        int flagfirstx=0;
         int posx=0;
         int posy=0;
+        int posz=0;
+        int count=0;
 
         public ThreadConnected(BluetoothSocket socket) {
             InputStream in = null;
@@ -279,27 +304,47 @@ public class NastrActivity extends AppCompatActivity  {
                     //sbc.append(strIncom);
                    // Log.d("xxx", strIncom + " " + strIncom.length() );
                     if(strIncom.equals("x")){
-                        if(flag==0){
-                            posx=sbc.length();
+                        if(count==0){
+                            //sbc.append(strIncom);
+                            //posx=0;
+                            //flag=1;
+                            count=count+1;
                         }
                         else{
-                            btx=sbc.substring(posx,posy);
-                            bty=sbc.substring(posy,sbc.length());
+                            Log.d("xxx", "posx=" + posx );
+                            Log.d("xxx", "posy=" + posy );
+                            btx=sbc.substring(0,posy);
+                            Log.d("xxx", "btx=" + btx );
+                            bty=sbc.substring(posy,posz);
+                            Log.d("xxx","bty=" + bty );
+                            btz=sbc.substring(posz,sbc.length());
+                            Log.d("xxx","btz=" + btz );
                             sbc.delete(0, sbc.length());
                             flag2=1;
+                            count=1;
                       //      Log.d("xxx", btx );
                         }
 
                     }
                     else if(strIncom.equals("y")){
-                        posy=sbc.length();
-                        flag=1;
+
+                            posy = count-1;
+                            // flag=1;
+
+                    }
+                    else if(strIncom.equals("z")){
+
+                            posz = count-1;
+
                     }
                     else{
-                        sbc.append(strIncom);
-                       // Log.d("xxx", strIncom );
+                        if (count!=0) {
+                            sbc.append(strIncom);
+                            count = count + 1;
+                            Log.d("xxx", "str=" + sbc);
+                        }
                     }
-                    sb.append(strIncom); // собираем символы в строку
+                  //  sb.append(strIncom); // собираем символы в строку
 
                    // int endOfLineIndex = sb.indexOf("\r\n"); // определяем конец строки
                     //Log.d("xxx", sb.substring(0));
@@ -307,7 +352,7 @@ public class NastrActivity extends AppCompatActivity  {
                       //  Log.d("xxx", "btx=" + btx );
                         //sbprint = sb.substring(0, sb.length());
                       //  sb.delete(0, sb.length());
-                        sbprint="x=" + btx + " " + "y=" + bty;
+                        sbprint="x=" + btx + " " + "y=" + bty + "z=" + btz;
                         flag2=0;
                         runOnUiThread(new Runnable() { // Вывод данных
                             @Override

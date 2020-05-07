@@ -95,8 +95,10 @@ public class AgdView extends SurfaceView implements Runnable {
             //рассчитаем угол поворота
 
             if(NastrActivity.fbtx>0){
-                turnp=180-(NastrActivity.fbtx-NastrActivity.corx) ;
-            }
+                turnp=180-(NastrActivity.fbtx+NastrActivity.corx) ;
+                }
+
+
             if(NastrActivity.fbtx<0){
                 turnp=-(180+(NastrActivity.fbtx+NastrActivity.corx) );
             }
@@ -120,7 +122,7 @@ public class AgdView extends SurfaceView implements Runnable {
             gameThread.sleep(15);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+         }
     }
 
 
