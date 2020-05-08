@@ -54,6 +54,7 @@ public class NastrActivity extends AppCompatActivity  {
     public static float fbtz;
     public static float corx=0;
     public static float cory=0; //для коррекции показаний через кнопки
+    public static float fbtycorr=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +84,7 @@ public class NastrActivity extends AppCompatActivity  {
                 mHandler.obtainMessage();
                 data = msg.getData().getString("Key");
                 textBt.setText(data);
-                Log.d("xxx",data);
+               // Log.d("xxx",data);
                 try {
                     fbtx=Float.parseFloat(btx);
                     fbty=Float.parseFloat(bty);
@@ -176,7 +177,7 @@ public class NastrActivity extends AppCompatActivity  {
         if(fbtx<0){
             corx=-(180+fbtx);
         }
-
+      fbtycorr=fbty;
     }
 
 
@@ -311,14 +312,14 @@ public class NastrActivity extends AppCompatActivity  {
                             count=count+1;
                         }
                         else{
-                            Log.d("xxx", "posx=" + posx );
-                            Log.d("xxx", "posy=" + posy );
+                           // Log.d("xxx", "posx=" + posx );
+                           // Log.d("xxx", "posy=" + posy );
                             btx=sbc.substring(0,posy);
-                            Log.d("xxx", "btx=" + btx );
+                           // Log.d("xxx", "btx=" + btx );
                             bty=sbc.substring(posy,posz);
-                            Log.d("xxx","bty=" + bty );
+                          //  Log.d("xxx","bty=" + bty );
                             btz=sbc.substring(posz,sbc.length());
-                            Log.d("xxx","btz=" + btz );
+                          //  Log.d("xxx","btz=" + btz );
                             sbc.delete(0, sbc.length());
                             flag2=1;
                             count=1;
@@ -341,7 +342,7 @@ public class NastrActivity extends AppCompatActivity  {
                         if (count!=0) {
                             sbc.append(strIncom);
                             count = count + 1;
-                            Log.d("xxx", "str=" + sbc);
+                          //  Log.d("xxx", "str=" + sbc);
                         }
                     }
                   //  sb.append(strIncom); // собираем символы в строку

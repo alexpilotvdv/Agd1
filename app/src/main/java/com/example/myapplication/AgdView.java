@@ -107,7 +107,7 @@ public class AgdView extends SurfaceView implements Runnable {
                 canvas = surfaceHolder.lockCanvas(); // закрываем canvas
                 canvas.drawColor(Color.BLACK); // заполняем фон чёрным
                 //ship.drowxy(paint, canvas, 0, -30 -(horH-ecrH)/2+NastrActivity.fbty * 7);
-                ship.drowxy(paint, canvas, 0, ky+NastrActivity.fbty * pixgradus);
+                ship.drowxy(paint, canvas, 0, ky+(NastrActivity.fbty-NastrActivity.fbtycorr) * pixgradus);
                 plane.drowangel(paint,canvas,turnp);
                 // ship.drow(paint, canvas); // рисуем корабль
                 surfaceHolder.unlockCanvasAndPost(canvas); // открываем canvas
