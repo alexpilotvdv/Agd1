@@ -14,7 +14,7 @@
         />
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="30"
         android:orientation="vertical">
 
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:id="@+id/textInfo"
-            android:layout_weight="10"
+            android:layout_weight="20"
             android:visibility="visible" />
         <TextView
             android:layout_width="wrap_content"
